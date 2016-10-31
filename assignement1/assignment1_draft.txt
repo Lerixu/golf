@@ -1,0 +1,77 @@
+﻿%  Draft version
+
+1> Ethernet frame
+
+* Source MAC address: 
+00 13 10 e8 dd 52
+
+* Destination MAC address:
+00 27 10 21 fa 48
+
+* Protocol : 
+The 13th and 14th bytes holds the EtherType :08 06 -> Address Resolution Protocol (ARP)
+
+* Last 2 fields :
+First of all, the payload is 28 bytes and since the EtherType is ARP this means we are working with Ipv4.
+The 20th byte holds the lenght of the protocol address (4), and folowing the ARP encaspsulated packet structure, the last 4 bytes represents the last 2 fields of the ARP payload that holds the Target Protocol Address (TPA)
+wich in this case is : c0 a8 02 67 converted to decimal 192 168 2 103. This means that the target IP is 192.168.2.103.
+
+2> Cable Issue
+
+Using 
+The speed of light value of : 299792458 m/s
+Cable lenght of 20m
+
+In the case of a 100Mb/s :
+1ns -> 2.99 m
+x   -> 20 m
+
+x = 20/2.99 ns
+x = 6.68 ns
+
+Wich means it will take 6.68ns for the first bit to travel 20 m for 100Mb/s ethernet card
+
+In the case of 10Mb/s, we assume that it will take ~10 times the time it took for the 100Mb/s ethernet card:
+1ns -> 0.29 m
+x   -> 20 m
+
+x = 20/0.29 ns
+x = 68.9 ns
+
+Wich means it will take 68.9ns for the first bit to travel 20 m for 10Mb/s ethernet card
+
+3>Basic network tools
+Using windows
+
+**In the Dorm
+* The % packet loss if at all it happened after sending 100 packets using the command : 
+ping -n 100 www.wikipedia.org
+image : ping100packets.png
+image result : ping100packets_result.png
+
+* Size of the packet sent to Wikipedia server can be specified by the following command (default is 32 bit):
+ping -l 2000 www.wikipedia.org
+image : pingWithPacketSize.png
+
+* IP address of your machine and the Wikipedia server:
+
+localhost : using the command ipconfig : 172.16.5.146
+image : ipconfigLocalhost.png
+
+wikipedia.org : using nslookup (dig not available for windows) 91.198.174.192
+image : nslookupWikipedia.png
+
+* Query Time for DNS query of the above url. TODO (need linux, still looking for an alternative for windows)
+
+* Number of Hops in between your machine and the server 
+using the command tracert (windows alt for traceroute) : 12
+image : traceroute.png
+
+* MAC address of the device that is acting as your network gateway.
+using the command ipconfig /all : F0-92-1C-4E-8A-9E
+image : macAddress.png
+
+4>Simple Python Programming
+
+file : assignment1_4.py
+
