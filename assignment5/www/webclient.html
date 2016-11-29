@@ -1,0 +1,44 @@
+<html >
+ <head >
+ <title >Abusing the HTTP protocol - Example </title >
+ </head >
+ <body >
+ <h1 >Display data from the Server </h1 >
+ The following line changes on the servers command line
+ input: <br >
+ <span id="response" style =" color:red">
+ This will be replaced by messages from the server
+ </span >
+ <script>
+	
+function polling(){
+			console.log('Sending request');
+			if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+				var xhr = new XMLHttpRequest();
+			}
+			else { // code for IE6, IE5
+				var xhr = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+			xhr.open('GET', 'last_broadcast', true);
+			xhr.timeout = 15000; // Give 10s timeout for the server
+			xhr.onreadystatechange = function(){
+				if (xhr.readyState == 4 ){
+					if(xhr.status == 200){
+							document.getElementById("response").textContent = xhr.responseText;
+					}
+				setTimeout(polling(), 15000);
+				}				
+			};
+			xhr.ontimeout = function () {
+			  console.log('request timed out, calling poll again in 5s')
+			  setTimeout(polling(), 15000);
+			};
+			xhr.send();	
+			console.log('Polling done, Waiting for next poll');
+			
+		}
+	window.onload = polling()
+		
+</script>
+ </body >
+ </html >
